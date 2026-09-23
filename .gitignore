@@ -1,0 +1,17 @@
+work/
+slprj/
+*.slxc
+*.mex*
+codegen/
+*.autosave
+*_ert_rtw/
+*.asv
+
+# embedded firmware (Embedded Coder build output)
+*.bin
+*.bootloader.bin
+*.partitions.bin
+*.elf
+*.hex
+*.eep
+*.map
