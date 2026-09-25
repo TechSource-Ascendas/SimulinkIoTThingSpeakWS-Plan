@@ -2,11 +2,11 @@
 <img src="workshop instruction/images/techsource_logo.png" alt="TechSource Systems" width="400">
 </div>
 
-[![Buka di MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/)
+[![Buka di MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://matlab.mathworks.com/open/github/v1?repo=TechSource-Ascendas/SimulinkIoTThingSpeakWS-Plan)
 
 # Hands-On Workshop — IoT dengan Simulink, ThingSpeak & ESP32
 
-> 🇬🇧 English version? Open [README_en.md](README_en.md)
+> 🇬🇧 English version? Open [README.md](README.md)
 
 ## Model — Simulink IoT ThingSpeak dengan ESP32 (ID)
 
