@@ -85,7 +85,7 @@ SimulinkIoTThingSpeakWS-Plan/
    ```matlab
    >> open_system('models/SimulinkIoTThingSpeak_starter.slx')
    ```
-4. Verify the hardware support package (Step 0 in the guide):
+4. Verify the hardware support package (Step 1 in the guide):
    ```matlab
    >> ver('simulink'), ver('ecoder')
    >> supportPackageInstaller   % confirm "Simulink Support Package for Arduino Hardware" (ESP32)
@@ -110,7 +110,7 @@ The **starter** model (R2026a) ships with the simulation scaffolding already wir
 
 Field mapping (matches the ThingSpeak channel): **Field 1 = TemperatureData, Field 2 = ThresholdData, Field 3 = FanControl**.
 
-> ⚠️ **Credentials:** the shipped models contain **placeholders only** — Wi-Fi (`YOUR_WIFI_SSID` / `YOUR_WIFI_PASSWORD`), MQTT (`YOUR_MQTT_USERNAME` / `YOUR_MQTT_PASSWORD`), and the ThingSpeak read key (`YOUR_READ_API_KEY`). Each group enters its **own** values before running (the guide's Step 3 shows where); the demo channel ID (`3478187`) is kept only as a reference. Never commit real keys.
+> ⚠️ **Credentials:** the shipped models contain **placeholders only** — Wi-Fi (`YOUR_WIFI_SSID` / `YOUR_WIFI_PASSWORD`), MQTT (`YOUR_MQTT_USERNAME` / `YOUR_MQTT_PASSWORD`), and the ThingSpeak read key (`YOUR_READ_API_KEY`). Each group enters its **own** values before running (the guide's Step 4 shows where); the demo channel ID (`3478187`) is kept only as a reference. Never commit real keys.
 
 ---
 

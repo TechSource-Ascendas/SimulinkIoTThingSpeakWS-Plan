@@ -18,7 +18,7 @@
 
 ---
 
-## 0. Gambaran Workshop
+## 1. Gambaran Workshop
 
 Pada workshop hands-on 2 jam ini Anda membangun sebuah **model Simulink® yang berjalan di ESP32**, membaca data sensor, dan mempublikasikannya secara live ke **kanal ThingSpeak™** melalui MQTT. Model ini juga memperlihatkan loop IoT yang lengkap: model membaca kembali kanalnya sendiri serta menggerakkan output fisik dan output simulasi.
 
@@ -41,7 +41,7 @@ Workshop dibagi menjadi enam fase:
 
 ---
 
-## 1. Tujuan Pembelajaran
+## 2. Tujuan Pembelajaran
 
 Setelah sesi ini Anda akan mampu:
 
@@ -55,7 +55,7 @@ Setelah sesi ini Anda akan mampu:
 
 ---
 
-## 2. Langkah 0 — Verifikasi Toolbox & Hubungkan ESP32 (~10 menit)
+## 3. Langkah 1 — Verifikasi Toolbox & Hubungkan ESP32 (~10 menit)
 
 Buka MATLAB dan jalankan file project terlebih dahulu agar path dan pengaturan terkonfigurasi:
 
@@ -101,11 +101,11 @@ Catat **port COM** (misal `COM8`). Model lengkap menggunakan **external mode (XC
 
 ---
 
-## 3. Langkah 1 — Buat Akun & Kanal ThingSpeak (~10 menit)
+## 4. Langkah 2 — Buat Akun & Kanal ThingSpeak (~10 menit)
 
 > 🌐 Langkah ini dilakukan di web browser. Gunakan **akun MathWorks / ThingSpeak Anda sendiri** — setiap kelompok membuat **kanal dan kunci miliknya sendiri**.
 
-### 3a. Buat akun
+### 4a. Buat akun
 
 1. Buka **https://thingspeak.mathworks.com** di browser.
 
@@ -115,7 +115,7 @@ Catat **port COM** (misal `COM8`). Model lengkap menggunakan **external mode (XC
 2. Klik **Sign In**. Jika belum punya akun MathWorks, klik **Create Account** pada halaman sign-in MathWorks dan lengkapi registrasi (nama, email, kata sandi).
 3. Setelah masuk, Anda tiba di dashboard ThingSpeak.
 
-### 3b. Buat kanal privat
+### 4b. Buat kanal privat
 
 1. Dari navigasi atas klik **Channels → My Channels**.
 2. Klik **New Channel** (atau **+ New Channel**).
@@ -135,14 +135,14 @@ Catat **port COM** (misal `COM8`). Model lengkap menggunakan **external mode (XC
 ![Channel Settings dengan tiga field bernama](images/screenshot_thingspeak_channel_settings.png)
 *Gambar 2: Halaman Channel Settings setelah disimpan — Field 1 = TemperatureData, Field 2 = ThresholdData, Field 3 = FanControl.*
 
-### 3c. Kumpulkan empat kredensial
+### 4c. Kumpulkan empat kredensial
 
 Buka kanal (**Channels → My Channels → kanal Anda**), lalu buka tab **API Keys**.
 
 ![Tab API Keys ThingSpeak](images/screenshot_thingspeak_api_keys.png)
 *Gambar 3: Tab API Keys menampilkan Write API Key, Read API Key, dan contoh REST/MQTT. Nilai kunci kanal demo **dikaburkan** demi privasi; kanal Anda sendiri akan menampilkan kunci masing-masing.*
 
-Catat kredensial berikut untuk Langkah 3/4 — akan Anda masukkan ke model Simulink:
+Catat kredensial berikut untuk Langkah 4/5 — akan Anda masukkan ke model Simulink:
 
 | Kredensial | Di mana menemukannya | Nilai kanal demo (referensi saja) |
 |------------|----------------------|-------------------------------------|
@@ -154,7 +154,7 @@ Catat kredensial berikut untuk Langkah 3/4 — akan Anda masukkan ke model Simul
 
 ---
 
-## 4. Langkah 2 — Jelajahi Model Starter (~5 menit)
+## 5. Langkah 3 — Jelajahi Model Starter (~5 menit)
 
 ```matlab
 >> open_system('models/SimulinkIoTThingSpeak_starter.slx')
@@ -168,7 +168,7 @@ Model starter sudah berisi (hanya dibaca pada langkah ini):
 - **Knob / Knob1** — input dashboard (`ScaleMax = 4095`, sesuai ADC 12-bit ESP32).
 - **SensorADC Value** dan **ThresholdData** (konstanta, `±3620` / `±2951` di starter) — nilai *simulasi* yang diatur knob. Di model **lengkap**, keduanya menjadi **parameter tunable** `SensorKnob` / `ThresholdKnob` (didefinisikan di `data/TunableParameter.m`).
 - **Sensor Data Source** — komponen web custom tuning (toggle Sim ↔ Hardware).
-- **Switch / Switch2** — memilih input **Simulasi** (dari knob) atau **Hardware** (dari ADC ESP32, ditambahkan di Langkah 4).
+- **Switch / Switch2** — memilih input **Simulasi** (dari knob) atau **Hardware** (dari ADC ESP32, ditambahkan di Langkah 5).
 - **Blok GoTo/From** — tag `SimADCTemp`, `SimThreshold`, `ADCTemp`, `ADCThreshold`, `TemperatureData`, `ThresholdData`, `FanControl` mengangkut sinyal di antara dua sisi model.
 - **Display & Lamp** — memvisualisasikan nilai hasil scaling dan status on/off.
 
@@ -176,7 +176,7 @@ Model starter sudah berisi (hanya dibaca pada langkah ini):
 
 ---
 
-## 5. Langkah 3 — Konfigurasi Target ESP32 (~5 menit)
+## 6. Langkah 4 — Konfigurasi Target ESP32 (~5 menit)
 
 Buka **Model Settings** (**Ctrl+E**) dan periksa pengaturan berikut:
 
@@ -209,11 +209,11 @@ Buka **Model Settings** (**Ctrl+E**) dan periksa pengaturan berikut:
 
 ---
 
-## 6. Langkah 4–7 — Bangun Blok IoT & Hardware (~40 menit)
+## 7. Langkah 5–8 — Bangun Blok IoT & Hardware (~40 menit)
 
 > Semua blok di bawah ini ada di **model lengkap** (`models/SimulinkIoTThingSpeak_complete.slx`). Tambahkan ke starter dan hubungkan ke tag GoTo/From yang sudah ada.
 
-### Langkah 4: Analog input + loop-back DAC
+### Langkah 5: Analog input + loop-back DAC
 
 Dari library **Simulink Support Package for Arduino** (`arduinolib`) tambahkan:
 
@@ -227,7 +227,7 @@ Dari library **Simulink Support Package for Arduino** (`arduinolib`) tambahkan:
 
 > 🔑 **Mengapa 1/16?** ADC ESP32 menghasilkan 0–4095 (12-bit). `4096 ÷ 256 = 16`, sehingga `Gain = 1/16` memetakan rentang ADC penuh ke rentang DAC 8-bit (0–255) — tanpa saturasi, jangkauan penuh.
 
-### Langkah 5: Publikasi ke ThingSpeak melalui MQTT
+### Langkah 6: Publikasi ke ThingSpeak melalui MQTT
 
 Model menyusun string payload lalu mempublikasikannya setiap 60 detik.
 
@@ -252,9 +252,9 @@ Model menyusun string payload lalu mempublikasikannya setiap 60 detik.
    ![Dialog blok WiFi MQTT Publish](images/screenshot_mqtt_publish_dialog.png)
    *Gambar 9: Dialog **WiFi MQTT Publish** — Broker service = `ThingSpeak`, **Update interval** = `60` detik.*
 
-> 📡 Blok menggunakan kredensial **Wi-Fi** dan **MQTT ThingSpeak** yang Anda atur di **Langkah 3** (Model Settings → Target hardware resources). Broker MQTT ThingSpeak adalah `mqtt3.thingspeak.com`, port `1883`; blok menjaga koneksi persisten dan mempublikasikan sesuai interval.
+> 📡 Blok menggunakan kredensial **Wi-Fi** dan **MQTT ThingSpeak** yang Anda atur di **Langkah 4** (Model Settings → Target hardware resources). Broker MQTT ThingSpeak adalah `mqtt3.thingspeak.com`, port `1883`; blok menjaga koneksi persisten dan mempublikasikan sesuai interval.
 
-### Langkah 6: Logika fan / aktivitas (threshold)
+### Langkah 7: Logika fan / aktivitas (threshold)
 
 1. Tambahkan **Relational Operator** dan atur **Operator = `>`**.
    - **Input 1**: `TemperatureData` · **Input 2**: `ThresholdData`.
@@ -271,7 +271,7 @@ Model menyusun string payload lalu mempublikasikannya setiap 60 detik.
 
 Ketika `TemperatureData > ThresholdData`, `FanControl = 1` dan **D2 menyala**.
 
-### Langkah 7: Baca kembali kanal Anda (loop tertutup)
+### Langkah 8: Baca kembali kanal Anda (loop tertutup)
 
 1. Tambahkan blok **WiFi ThingSpeak Read** (`arduinowifilib`) dan atur:
    - **Channel ID** = **Channel ID** Anda
@@ -298,11 +298,11 @@ Ini memberi Anda loop *read-back*: apa pun yang dipublikasikan ESP32 akan muncul
 
 ---
 
-## 7. Langkah 8 — Deploy & Alirkan Data Live (~15 menit)
+## 8. Langkah 9 — Deploy & Alirkan Data Live (~15 menit)
 
 Karena **external mode** diaktifkan, MATLAB **membangun, mengunggah, dan menjalankan** model di ESP32, lalu memungkinkan Anda **Monitor & Tune** melalui tautan XCP-on-Serial.
 
-### Langkah 8a — Jalankan dengan Monitor & Tune (tab Hardware)
+### Langkah 9a — Jalankan dengan Monitor & Tune (tab Hardware)
 
 1. Pada toolstrip model, buka tab **Hardware**.
 2. Di grup **Run on Hardware**, klik **Monitor & Tune**.
@@ -310,7 +310,7 @@ Karena **external mode** diaktifkan, MATLAB **membangun, mengunggah, dan menjala
 ![Tab Hardware — jalankan external mode melalui Monitor & Tune](images/screenshot_monitor_tune.png)
 *Gambar 14: Pada tab **Hardware**, klik **Monitor & Tune** (lingkaran merah) — MATLAB membangun, mengunggah, dan menjalankan model di ESP32 dalam external mode.*
 
-> ⚠️ **Run pertama:** model membaca `SensorKnob` / `ThresholdKnob` dari base workspace. Jika build gagal dengan galat *"undefined variable"*, jalankan `run('data/TunableParameter.m')` terlebih dahulu (Langkah 0), lalu klik **Monitor & Tune** lagi.
+> ⚠️ **Run pertama:** model membaca `SensorKnob` / `ThresholdKnob` dari base workspace. Jika build gagal dengan galat *"undefined variable"*, jalankan `run('data/TunableParameter.m')` terlebih dahulu (Langkah 1), lalu klik **Monitor & Tune** lagi.
 
 MATLAB mengompilasi kode Embedded Coder (ERT), mem-flash ESP32 melalui port COM yang dikonfigurasi, terhubung XCP on Serial, dan aliran data dimulai.
 
@@ -330,7 +330,7 @@ Sekarang buka **ThingSpeak → Channels → My Channels → kanal Anda → Priva
 
 ---
 
-## 8. Langkah 9 — Validasi Pemetaan Field
+## 9. Langkah 10 — Validasi Pemetaan Field
 
 | Sinyal model | Rantai blok | Field ThingSpeak | Ekspektasi di kanal |
 |--------------|-------------|------------------|----------------------|
@@ -345,13 +345,13 @@ Jika ada field kosong atau salah:
 
 ---
 
-## 9. Tantangan (~10 menit)
+## 10. Tantangan (~10 menit)
 
 1. **Percepat:** ubah **Update interval** *WiFi MQTT Publish* dari `60` menjadi `30` detik. Jalankan ulang dan amati grafik Field 1 ter-update dua kali lebih cepat. Ingat batas penulisan pada tier gratis ThingSpeak.
 
 ---
 
-## 10. Ringkasan
+## 11. Ringkasan
 
 | Fase | Perintah / Aksi | Poin Kunci |
 |-------|------------------|--------------|
@@ -380,7 +380,7 @@ ADC ESP32 / knob dashboard ─▶ TemperatureData, ThresholdData
 
 ---
 
-## 11. Pemecahan Masalah
+## 12. Pemecahan Masalah
 
 | Masalah | Kemungkinan Penyebab | Solusi |
 |---------|----------------------|--------|
@@ -396,7 +396,7 @@ ADC ESP32 / knob dashboard ─▶ TemperatureData, ThresholdData
 
 ---
 
-## 12. Referensi MathWorks
+## 13. Referensi MathWorks
 
 - [ThingSpeak — Getting Started](https://www.mathworks.com/help/thingspeak/getting-started-with-thingspeak.html)
 - [Collect Data in a New Channel](https://www.mathworks.com/help/thingspeak/collect-data-in-a-new-channel.html)

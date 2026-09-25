@@ -85,7 +85,7 @@ SimulinkIoTThingSpeakWS-Plan/
    ```matlab
    >> open_system('models/SimulinkIoTThingSpeak_starter.slx')
    ```
-4. Verifikasi support package hardware (Langkah 0 di panduan):
+4. Verifikasi support package hardware (Langkah 1 di panduan):
    ```matlab
    >> ver('simulink'), ver('ecoder')
    >> supportPackageInstaller   % pastikan "Simulink Support Package for Arduino Hardware" (ESP32)
@@ -110,7 +110,7 @@ Model **starter** (R2026a) sudah berisi kerangka simulasi — knob dashboard (12
 
 Pemetaan field (sesuai kanal ThingSpeak): **Field 1 = TemperatureData, Field 2 = ThresholdData, Field 3 = FanControl**.
 
-> ⚠️ **Kredensial:** model yang dikirim hanya berisi **placeholder** — Wi-Fi (`YOUR_WIFI_SSID` / `YOUR_WIFI_PASSWORD`), MQTT (`YOUR_MQTT_USERNAME` / `YOUR_MQTT_PASSWORD`), dan read key ThingSpeak (`YOUR_READ_API_KEY`). Setiap kelompok memasukkan nilai **miliknya sendiri** sebelum menjalankan (Langkah 3 panduan menunjukkan lokasinya); Channel ID demo (`3478187`) disimpan hanya sebagai referensi. Jangan pernah men-commit kunci asli.
+> ⚠️ **Kredensial:** model yang dikirim hanya berisi **placeholder** — Wi-Fi (`YOUR_WIFI_SSID` / `YOUR_WIFI_PASSWORD`), MQTT (`YOUR_MQTT_USERNAME` / `YOUR_MQTT_PASSWORD`), dan read key ThingSpeak (`YOUR_READ_API_KEY`). Setiap kelompok memasukkan nilai **miliknya sendiri** sebelum menjalankan (Langkah 4 panduan menunjukkan lokasinya); Channel ID demo (`3478187`) disimpan hanya sebagai referensi. Jangan pernah men-commit kunci asli.
 
 ---
 

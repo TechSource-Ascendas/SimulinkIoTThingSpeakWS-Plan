@@ -18,7 +18,7 @@
 
 ---
 
-## 0. Workshop Overview
+## 1. Workshop Overview
 
 In this 2-hour hands-on workshop you build a **Simulink® model that runs on an ESP32**, reads sensor data, and publishes it live to a **ThingSpeak™ channel** over MQTT. The model also demonstrates a closed IoT loop: it reads its own channel back and drives both a simulated and a physical output.
 
@@ -41,7 +41,7 @@ You work through the workshop in six phases:
 
 ---
 
-## 1. Learning Objectives
+## 2. Learning Objectives
 
 After this session you will be able to:
 
@@ -55,7 +55,7 @@ After this session you will be able to:
 
 ---
 
-## 2. Step 0 — Verify Toolboxes & Connect the ESP32 (~10 min)
+## 3. Step 1 — Verify Toolboxes & Connect the ESP32 (~10 min)
 
 Open MATLAB and run the project file first so the path and settings are configured:
 
@@ -101,11 +101,11 @@ Record the **COM port** (e.g. `COM8`). The completed model uses **external mode 
 
 ---
 
-## 3. Step 1 — Create a ThingSpeak Account & Channel (~10 min)
+## 4. Step 2 — Create a ThingSpeak Account & Channel (~10 min)
 
 > 🌐 This step is done in a web browser. Use your **own MathWorks / ThingSpeak account** — every group creates its **own channel and its own keys**.
 
-### 3a. Create the account
+### 4a. Create the account
 
 1. Open **https://thingspeak.mathworks.com** in a browser.
 
@@ -115,7 +115,7 @@ Record the **COM port** (e.g. `COM8`). The completed model uses **external mode 
 2. Click **Sign In**. If you do not yet have a MathWorks account, click **Create Account** on the MathWorks sign-in page and complete the registration (name, email, password).
 3. After sign-in you land on your ThingSpeak dashboard.
 
-### 3b. Create a private channel
+### 4b. Create a private channel
 
 1. From the top navigation click **Channels → My Channels**.
 2. Click **New Channel** (or **+ New Channel**).
@@ -135,14 +135,14 @@ Record the **COM port** (e.g. `COM8`). The completed model uses **external mode 
 ![Channel Settings with the three named fields](images/screenshot_thingspeak_channel_settings.png)
 *Figure 2: The Channel Settings page after saving — Field 1 = TemperatureData, Field 2 = ThresholdData, Field 3 = FanControl.*
 
-### 3c. Collect the four credentials
+### 4c. Collect the four credentials
 
 Open the channel (**Channels → My Channels → your channel**), then open the **API Keys** tab.
 
 ![ThingSpeak API Keys tab](images/screenshot_thingspeak_api_keys.png)
 *Figure 3: The API Keys tab shows the Write API Key, Read API Key(s), and REST/MQTT examples. The demo channel's key values are **blurred** for privacy; your own channel will show its own keys.*
 
-Record these for Step 3/4 — you will enter them into the Simulink model:
+Record these for Step 4/5 — you will enter them into the Simulink model:
 
 | Credential | Where to find it | Demo channel value (reference only) |
 |------------|------------------|-------------------------------------|
@@ -154,7 +154,7 @@ Record these for Step 3/4 — you will enter them into the Simulink model:
 
 ---
 
-## 4. Step 2 — Explore the Starter Model (~5 min)
+## 5. Step 3 — Explore the Starter Model (~5 min)
 
 ```matlab
 >> open_system('models/SimulinkIoTThingSpeak_starter.slx')
@@ -168,7 +168,7 @@ The starter already contains (read-only for this step):
 - **Knob / Knob1** — dashboard inputs (`ScaleMax = 4095`, matching the ESP32 12-bit ADC).
 - **SensorADC Value** and **ThresholdData** (constants, `~3620` / `~2951` in the starter) — the *simulation* values the knobs tune. In the **completed** model these become **tunable parameters** `SensorKnob` / `ThresholdKnob` (defined in `data/TunableParameter.m`).
 - **Sensor Data Source** — a custom tuning web component (the Sim ↔ Hardware toggle).
-- **Switch / Switch2** — select the **Simulated** input (from the knobs) or the **Hardware** input (from the ESP32 ADC, added in Step 4).
+- **Switch / Switch2** — select the **Simulated** input (from the knobs) or the **Hardware** input (from the ESP32 ADC, added in Step 5).
 - **GoTo/From blocks** — tags `SimADCTemp`, `SimThreshold`, `ADCTemp`, `ADCThreshold`, `TemperatureData`, `ThresholdData`, `FanControl` carry signals between the two halves of the model.
 - **Displays & Lamp** — visualize scaled values and on/off states.
 
@@ -176,7 +176,7 @@ The starter already contains (read-only for this step):
 
 ---
 
-## 5. Step 3 — Configure the ESP32 Target (~5 min)
+## 6. Step 4 — Configure the ESP32 Target (~5 min)
 
 Open **Model Settings** (**Ctrl+E**) and check the following:
 
@@ -209,11 +209,11 @@ Open **Model Settings** (**Ctrl+E**) and check the following:
 
 ---
 
-## 6. Steps 4–7 — Build the IoT & Hardware Blocks (~40 min)
+## 7. Steps 5–8 — Build the IoT & Hardware Blocks (~40 min)
 
 > All blocks below appear in the **completed model** (`models/SimulinkIoTThingSpeak_complete.slx`). Add them to the starter and wire them to the existing GoTo/From tags.
 
-### Step 4: Analog inputs + DAC loop-back
+### Step 5: Analog inputs + DAC loop-back
 
 From the **Simulink Support Package for Arduino** library (`arduinolib`) add:
 
@@ -227,7 +227,7 @@ From the **Simulink Support Package for Arduino** library (`arduinolib`) add:
 
 > 🔑 **Why 1/16?** The ESP32 ADC returns 0–4095 (12-bit). `4096 ÷ 256 = 16`, so `Gain = 1/16` maps the full ADC range onto the 8-bit DAC range (0–255) — no saturation, full travel.
 
-### Step 5: Publish to ThingSpeak over MQTT
+### Step 6: Publish to ThingSpeak over MQTT
 
 The model builds a payload string and publishes it every 60 s.
 
@@ -252,9 +252,9 @@ The model builds a payload string and publishes it every 60 s.
    ![WiFi MQTT Publish block parameters](images/screenshot_mqtt_publish_dialog.png)
    *Figure 9: The **WiFi MQTT Publish** dialog — Broker service = `ThingSpeak`, **Update interval** = `60` s.*
 
-> 📡 The block uses the **Wi-Fi** and **ThingSpeak MQTT credentials** you set in **Step 3** (Model Settings → Target hardware resources). ThingSpeak's MQTT broker is `mqtt3.thingspeak.com`, port `1883`; the block keeps a persistent connection and publishes on the interval.
+> 📡 The block uses the **Wi-Fi** and **ThingSpeak MQTT credentials** you set in **Step 4** (Model Settings → Target hardware resources). ThingSpeak's MQTT broker is `mqtt3.thingspeak.com`, port `1883`; the block keeps a persistent connection and publishes on the interval.
 
-### Step 6: Fan / activity logic (threshold)
+### Step 7: Fan / activity logic (threshold)
 
 1. Add a **Relational Operator** and set **Operator = `>`**.
    - **Input 1**: `TemperatureData` · **Input 2**: `ThresholdData`.
@@ -271,7 +271,7 @@ The model builds a payload string and publishes it every 60 s.
 
 When `TemperatureData > ThresholdData`, `FanControl = 1` and **D2 turns on**.
 
-### Step 7: Read your own channel back (closed loop)
+### Step 8: Read your own channel back (closed loop)
 
 1. Add a **WiFi ThingSpeak Read** block (`arduinowifilib`) and set:
    - **Channel ID** = your **Channel ID**
@@ -298,11 +298,11 @@ This gives you a *read-back* loop: whatever the ESP32 publishes appears back in 
 
 ---
 
-## 7. Step 8 — Deploy & Stream Live Data (~15 min)
+## 8. Step 9 — Deploy & Stream Live Data (~15 min)
 
 Because **external mode** is enabled, MATLAB **builds, uploads, and runs** the model on the ESP32, then lets you **Monitor & Tune** over the XCP-on-Serial link.
 
-### Step 8a — Run with Monitor & Tune (Hardware tab)
+### Step 9a — Run with Monitor & Tune (Hardware tab)
 
 1. In the model toolstrip, open the **Hardware** tab.
 2. In the **Run on Hardware** group, click **Monitor & Tune**.
@@ -310,7 +310,7 @@ Because **external mode** is enabled, MATLAB **builds, uploads, and runs** the m
 ![Hardware tab — run in external mode via Monitor & Tune](images/screenshot_monitor_tune.png)
 *Figure 14: On the **Hardware** tab, click **Monitor & Tune** (red circle) — MATLAB builds, uploads and starts the model on the ESP32 in external mode.*
 
-> ⚠️ **First run:** the model reads `SensorKnob` / `ThresholdKnob` from the base workspace. If the build fails with an *"undefined variable"* error, run `run('data/TunableParameter.m')` first (Step 0), then click **Monitor & Tune** again.
+> ⚠️ **First run:** the model reads `SensorKnob` / `ThresholdKnob` from the base workspace. If the build fails with an *"undefined variable"* error, run `run('data/TunableParameter.m')` first (Step 1), then click **Monitor & Tune** again.
 
 MATLAB compiles the Embedded Coder (ERT) code, flashes the ESP32 over the configured COM port, connects XCP on Serial, and the data stream starts.
 
@@ -330,7 +330,7 @@ Now open **ThingSpeak → Channels → My Channels → your channel → Private 
 
 ---
 
-## 8. Step 9 — Validate the Field Mapping
+## 9. Step 10 — Validate the Field Mapping
 
 | Model signal | Block chain | ThingSpeak field | Expected on the channel |
 |--------------|-------------|------------------|--------------------------|
@@ -345,13 +345,13 @@ If a field is empty or wrong:
 
 ---
 
-## 9. Challenge (~10 min)
+## 10. Challenge (~10 min)
 
 1. **Speed it up:** change the **Update interval** of *WiFi MQTT Publish* from `60` to `30` seconds. Re-run and watch the Field 1 chart update twice as fast. Keep in mind ThingSpeak's free-tier write limits.
 
 ---
 
-## 10. Summary
+## 11. Summary
 
 | Phase | Command / Action | Key Takeaway |
 |-------|------------------|--------------|
@@ -380,7 +380,7 @@ ESP32 ADC / dashboard knob ─▶ TemperatureData, ThresholdData
 
 ---
 
-## 11. Troubleshooting
+## 12. Troubleshooting
 
 | Issue | Possible Cause | Solution |
 |-------|----------------|----------|
@@ -396,7 +396,7 @@ ESP32 ADC / dashboard knob ─▶ TemperatureData, ThresholdData
 
 ---
 
-## 12. MathWorks References
+## 13. MathWorks References
 
 - [ThingSpeak — Getting Started](https://www.mathworks.com/help/thingspeak/getting-started-with-thingspeak.html)
 - [Collect Data in a New Channel](https://www.mathworks.com/help/thingspeak/collect-data-in-a-new-channel.html)
