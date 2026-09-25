@@ -1,2 +1,20 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# MATLAB / Office / media assets are binary containers (zip or OLE). Never let
+# line-ending conversion touch them - a rewritten CRLF inside a .mlx/.slx/.docx
+# silently corrupts the archive for anyone who clones the repo.
+*.mlx   -text
+*.slx   -text
+*.slxc  -text
+*.mdl   -text
+*.mat   -text
+*.docx  -text
+*.xlsx  -text
+*.pptx  -text
+*.bin   -text
+*.png   -text
+*.jpg   -text
+*.jpeg  -text
+*.gif   -text
+*.ico   -text
