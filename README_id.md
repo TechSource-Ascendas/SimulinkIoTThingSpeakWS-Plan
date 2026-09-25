@@ -30,6 +30,7 @@ SimulinkIoTThingSpeakWS-Plan/
 ├─ SimulinkIoTThingSpeak.prj             # Project MATLAB (atur path + konfigurasi)
 ├─ ComponentList_V1.0.xlsx               # Daftar komponen hardware (draf)
 ├─ .gitignore                            # Aturan ignore hasil code-generation MATLAB
+├─ .gitattributes                        # menandai .mlx/.slx/.docx/.xlsx sebagai biner (tanpa konversi line-ending)
 ├─ models/
 │  ├─ SimulinkIoTThingSpeak_starter.slx  # ⭐ MULAI DI SINI (kerangka simulasi, tanpa blok IoT)
 │  └─ SimulinkIoTThingSpeak_complete.slx # Model referensi lengkap (kunci jawaban)
@@ -46,15 +47,26 @@ SimulinkIoTThingSpeakWS-Plan/
    ├─ images/                            # screenshot asli MATLAB & ThingSpeak
    │  ├─ screenshot_starter_model.png
    │  ├─ screenshot_complete_model.png
+   │  ├─ screenshot_analog_input_dialog.png
+   │  ├─ screenshot_compose_string_dialog.png
+   │  ├─ screenshot_relational_operator_dialog.png
+   │  ├─ screenshot_string_to_ascii_dialog.png
+   │  ├─ screenshot_mqtt_publish_dialog.png
+   │  ├─ screenshot_digital_output_dialog.png
+   │  ├─ screenshot_thingspeak_read_dialog.png
+   │  ├─ screenshot_hardware_settings.png
+   │  ├─ screenshot_monitor_tune.png
    │  ├─ screenshot_thingspeak_home.png
    │  ├─ screenshot_thingspeak_channel_settings.png
    │  ├─ screenshot_thingspeak_api_keys.png
    │  ├─ screenshot_thingspeak_channel_live.png
    │  └─ techsource_logo.png
    ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_id.md      # panduan langkah (ID)
-   ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_en.md      # panduan langkah (EN)
    ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_id.docx    # DOCX (ID)
-   └─ WS1 - Simulink IoT with ThingSpeak and ESP32_en.docx    # DOCX (EN)
+   ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_id.mlx     # Live Script (ID)
+   ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_en.md      # panduan langkah (EN)
+   ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_en.docx    # DOCX (EN)
+   └─ WS1 - Simulink IoT with ThingSpeak and ESP32_en.mlx     # Live Script (EN)
 ```
 
 ---
@@ -105,7 +117,7 @@ Pemetaan field (sesuai kanal ThingSpeak): **Field 1 = TemperatureData, Field 2 =
 ## Status Konten
 
 - ✅ `models/SimulinkIoTThingSpeak_starter.slx` + `models/SimulinkIoTThingSpeak_complete.slx`
-- ✅ `workshop instruction/` — panduan WS1 MD + DOCX (ID & EN)
+- ✅ `workshop instruction/` — panduan WS1 dalam **MD + DOCX + MLX** (ID & EN)
 - ✅ `workshop instruction/images/` — screenshot asli MATLAB & ThingSpeak
 - 🔜 `requirements/` CSV — turunkan dari sinyal model (daftar REQ)
 - 🔜 `tests/` CSV — kasus uji (pemetaan field, publish/read-back)

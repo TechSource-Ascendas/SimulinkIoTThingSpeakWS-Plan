@@ -30,6 +30,7 @@ SimulinkIoTThingSpeakWS-Plan/
 ├─ SimulinkIoTThingSpeak.prj             # MATLAB project (path + configuration)
 ├─ ComponentList_V1.0.xlsx               # Hardware & component list (draft)
 ├─ .gitignore                            # MATLAB code-generation ignore rules
+├─ .gitattributes                        # pins .mlx/.slx/.docx/.xlsx as binary (never line-ending convert)
 ├─ models/
 │  ├─ SimulinkIoTThingSpeak_starter.slx  # ⭐ START HERE (simulation scaffolding, no IoT blocks)
 │  └─ SimulinkIoTThingSpeak_complete.slx # Completed reference model (answer key)
@@ -46,15 +47,26 @@ SimulinkIoTThingSpeakWS-Plan/
    ├─ images/                            # genuine MATLAB + ThingSpeak screenshots
    │  ├─ screenshot_starter_model.png
    │  ├─ screenshot_complete_model.png
+   │  ├─ screenshot_analog_input_dialog.png
+   │  ├─ screenshot_compose_string_dialog.png
+   │  ├─ screenshot_relational_operator_dialog.png
+   │  ├─ screenshot_string_to_ascii_dialog.png
+   │  ├─ screenshot_mqtt_publish_dialog.png
+   │  ├─ screenshot_digital_output_dialog.png
+   │  ├─ screenshot_thingspeak_read_dialog.png
+   │  ├─ screenshot_hardware_settings.png
+   │  ├─ screenshot_monitor_tune.png
    │  ├─ screenshot_thingspeak_home.png
    │  ├─ screenshot_thingspeak_channel_settings.png
    │  ├─ screenshot_thingspeak_api_keys.png
    │  ├─ screenshot_thingspeak_channel_live.png
    │  └─ techsource_logo.png
-   ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_en.md      # step-by-step (EN)
-   ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_id.md      # step-by-step (ID)
+   ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_en.md      # step-by-step guide (EN)
    ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_en.docx    # DOCX (EN)
-   └─ WS1 - Simulink IoT with ThingSpeak and ESP32_id.docx    # DOCX (ID)
+   ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_en.mlx     # Live Script (EN)
+   ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_id.md      # step-by-step guide (ID)
+   ├─ WS1 - Simulink IoT with ThingSpeak and ESP32_id.docx    # DOCX (ID)
+   └─ WS1 - Simulink IoT with ThingSpeak and ESP32_id.mlx     # Live Script (ID)
 ```
 
 ---
@@ -105,7 +117,7 @@ Field mapping (matches the ThingSpeak channel): **Field 1 = TemperatureData, Fie
 ## Content Status
 
 - ✅ `models/SimulinkIoTThingSpeak_starter.slx` + `models/SimulinkIoTThingSpeak_complete.slx`
-- ✅ `workshop instruction/` — WS1 guide MD + DOCX (EN & ID)
+- ✅ `workshop instruction/` — WS1 guide in **MD + DOCX + MLX** (EN & ID)
 - ✅ `workshop instruction/images/` — genuine MATLAB & ThingSpeak screenshots
 - 🔜 `requirements/` CSV — derive from the model signals (REQ list)
 - 🔜 `tests/` CSV — validation cases (field mapping, publish/read-back)
