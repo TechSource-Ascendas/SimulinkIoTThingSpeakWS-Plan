@@ -14,7 +14,7 @@ Repositori ini berisi seluruh materi peserta & instruktur untuk **workshop hands
 
 | | |
 |---|---|
-| **Durasi** | 120 menit (30 menit setup IoT + 40 menit membangun model + 30 menit deploy & data live + 20 menit tantangan) |
+| **Durasi** | 100 menit (30 menit setup IoT + 40 menit membangun model + 30 menit deploy & data live) |
 | **Peserta** | Mahasiswa S1, latar belakang teknik |
 | **Produk** | MATLAB R2026a, Simulink, Embedded Coder *(produk yang dilaporkan Dependency Analyzer MATLAB)* |
 | **Dukungan ESP32 (add-on)** | Simulink Support Package for Arduino Hardware (ESP32-WROOM) — support package, bukan toolbox (`ver` tidak akan mendaftarnya) |

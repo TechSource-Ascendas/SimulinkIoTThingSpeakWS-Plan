@@ -14,7 +14,7 @@ This repository holds the complete participant + instructor material for a **han
 
 | | |
 |---|---|
-| **Duration** | 120 minutes (30 IoT setup + 40 model build + 30 deploy & live data + 20 challenge) |
+| **Duration** | 100 minutes (30 IoT setup + 40 model build + 30 deploy & live data) |
 | **Audience** | Undergraduate, engineering background |
 | **Products** | MATLAB R2026a, Simulink, Embedded Coder *(the products reported by the MATLAB Dependency Analyzer)* |
 | **ESP32 support (add-on)** | Simulink Support Package for Arduino Hardware (ESP32-WROOM) — a support package, not a toolbox (`ver` will not list it) |
