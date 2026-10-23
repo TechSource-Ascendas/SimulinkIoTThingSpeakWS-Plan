@@ -8,7 +8,7 @@
 
 | Metadata | |
 |----------|---|
-| **Durasi** | 120 menit (30 menit setup IoT + 40 menit membangun model + 30 menit deploy & data live + 20 menit tantangan) |
+| **Durasi** | 100 menit (30 menit setup IoT + 40 menit membangun model + 30 menit deploy & data live) |
 | **Peserta** | Mahasiswa S1, latar belakang teknik (pemula hingga menengah) |
 | **Produk MATLAB** | MATLAB, Simulink, Embedded Coder *(sesuai laporan Dependency Analyzer MATLAB)* |
 | **Dukungan ESP32 (add-on)** | Simulink Support Package for Arduino Hardware — support package, bukan toolbox (`ver` tidak akan mendaftarnya) |
@@ -20,7 +20,7 @@
 
 ## 1. Gambaran Workshop
 
-Pada workshop hands-on 2 jam ini Anda membangun sebuah **model Simulink® yang berjalan di ESP32**, membaca data sensor, dan mempublikasikannya secara live ke **kanal ThingSpeak™** melalui MQTT. Model ini juga memperlihatkan loop IoT yang lengkap: model membaca kembali kanalnya sendiri serta menggerakkan output fisik dan output simulasi.
+Pada workshop hands-on 100 menit ini Anda membangun sebuah **model Simulink® yang berjalan di ESP32**, membaca data sensor, dan mempublikasikannya secara live ke **kanal ThingSpeak™** melalui MQTT. Model ini juga memperlihatkan loop IoT yang lengkap: model membaca kembali kanalnya sendiri serta menggerakkan output fisik dan output simulasi.
 
 | Sinyal | Sumber | Field ThingSpeak |
 |--------|--------|------------------|
@@ -28,14 +28,13 @@ Pada workshop hands-on 2 jam ini Anda membangun sebuah **model Simulink® yang b
 | **ThresholdData** | Analog input / knob threshold | **Field 2** |
 | **FanControl** | TemperatureData > ThresholdData | **Field 3** |
 
-Workshop dibagi menjadi enam fase:
+Workshop dibagi menjadi lima fase:
 
 1. ✅ **Siapkan peralatan** — verifikasi produk MATLAB, pasang support package ESP32, dan hubungkan board.
 2. ✅ **Buat akun & kanal ThingSpeak** — nama field, Channel ID, kunci Write/Read/MQTT.
 3. ✅ **Jelajahi model starter** — kerangka simulasi sudah terpasang (knob, switch, display).
 4. ✅ **Bangun blok IoT + hardware** — analog input, loop-back DAC, logika threshold, publish MQTT, dan read-back ThingSpeak.
 5. ✅ **Deploy & alirkan data live** — jalankan external mode (Monitor & Tune), amati grafik ThingSpeak ter-update.
-6. ✅ **Tantangan** — ubah laju update, tambah field, dan lihat output fisik bereaksi.
 
 > 💡 **Model lengkap** (`models/SimulinkIoTThingSpeak_complete.slx`) adalah kunci jawaban Anda. Gunakan jika Anda tertinggal — tetapi cobalah membangunnya sendiri dari **starter** terlebih dahulu.
 
@@ -102,8 +101,6 @@ Catat **port COM** (misal `COM8`). Model lengkap menggunakan **external mode (XC
 ![Referensi pinout ESP32-WROOM-32 DevKit](images/screenshot_wiring.png)
 *Gambar 6: **Pinout ESP32-WROOM-32 DevKit.** Angka putih kecil di tepi board adalah nomor posisi header fisik, **bukan** nomor GPIO — bacalah label GPIO dan ADC. Workshop ini memakai input analog **A4/A5** (**GPIO32/GPIO33**), loop-back DAC **DAC1/DAC2** (**GPIO25/GPIO26**), dan output digital **D2** (**GPIO2**, LED onboard board).*
 
-> 🎤 **Narasi (presenter):** "Segala sesuatu di IoT kembali ke tiga pertanyaan: *bagaimana data masuk, ke mana data pergi, dan bagaimana data kembali?* Hari ini ESP32 adalah gerbangnya — ia membaca sensor, mempublikasikan lewat MQTT ke ThingSpeak, lalu membaca kembali kanalnya sendiri. Itulah satu loop IoT yang lengkap."
-
 ---
 
 ## 4. Langkah 2 — Buat Akun & Kanal ThingSpeak (~10 menit)
@@ -155,8 +152,6 @@ Catat kredensial berikut untuk Langkah 4/5 — akan Anda masukkan ke model Simul
 
 > ⚠️ **Jaga kerahasiaan kunci.** Write key memungkinkan siapa pun menulis ke kanal Anda. Gunakan kunci Anda sendiri di model — jangan pernah men-commit kunci milik orang lain.
 
-> 🎤 **Narasi (presenter):** "Perhatikan nama field — `TemperatureData`, `ThresholdData`, `FanControl`. Itu bukan sekadar label. ThingSpeak menyimpan tiap nilai pada field bernomor, dan model menyusun pesan `field1=…&field2=…&field3=…` yang persis cocok dengan kanal ini. Salah penulisan nama, data masuk ke field yang keliru."
-
 ---
 
 ## 5. Langkah 3 — Jelajahi Model Starter (~5 menit)
@@ -176,8 +171,6 @@ Model starter sudah berisi (hanya dibaca pada langkah ini):
 - **Switch / Switch2** — memilih input **Simulasi** (dari knob) atau **Hardware** (dari ADC ESP32, ditambahkan di Langkah 5).
 - **Blok GoTo/From** — tag `SimADCTemp`, `SimThreshold`, `ADCTemp`, `ADCThreshold`, `TemperatureData`, `ThresholdData`, `FanControl` mengangkut sinyal di antara dua sisi model.
 - **Display & Lamp** — memvisualisasikan nilai hasil scaling dan status on/off.
-
-> 🎤 **Narasi (presenter):** "Model starter adalah jalur kabel — semua *pipa* sudah terpasang. Perhatikan tag `GoTo`/`From`: ia bekerja seperti bus bernama sehingga kita bisa merutekan sinyal tanpa menggambar setiap kabelnya. Tugas Anda sekarang adalah menambahkan *mesinnya*: input ADC asli, logika threshold, dan blok IoT yang berkomunikasi dengan ThingSpeak."
 
 ---
 
@@ -209,7 +202,6 @@ Buka **Model Settings** (**Ctrl+E**) dan periksa pengaturan berikut:
 - **Level optimisasi** = standar (`OptimizationPriority` `Balanced`); optimisasi penyimpanan buffer dan block-I/O nonaktif — menjaga kode yang dihasilkan tetap sederhana dan mudah dibaca.
 
 > 💡 Model lengkap dikirim dengan kredensial **placeholder** (`YOUR_WIFI_SSID`, `YOUR_WIFI_PASSWORD`, `YOUR_MQTT_USERNAME`, `YOUR_MQTT_PASSWORD`, `YOUR_READ_API_KEY`). **Ganti dengan Wi‑Fi dan kanal milik Anda sendiri** agar data mengalir ke akun ThingSpeak *Anda* — dialog blok dan pengaturan target membaca nilai-nilai ini saat build.
-
 
 
 ---
@@ -331,8 +323,6 @@ Sekarang buka **ThingSpeak → Channels → My Channels → kanal Anda → Priva
 
 > ✅ **Kriteria lolos:** dalam ±60 detik setelah **Run**, sampel baru muncul pada grafik **Field 1 dan Field 2**, dan **Field 3** berubah antara `0`/`1` saat Anda melewati threshold dengan knob. **Display** yang diumpan *WiFi ThingSpeak Read* me-refresh nilai yang sama kembali ke model.
 
-> 🎤 **Narasi (presenter):** "Inilah loop IoT yang terlihat: ESP32 membaca → mempublikasikan lewat MQTT → ThingSpeak menyimpan → model membaca kembali kanalnya sendiri. Jika Anda melihat Field 3 berubah di cloud sambil menarik knob, semua mata rantai bekerja."
-
 ---
 
 ## 9. Langkah 10 — Validasi Pemetaan Field
@@ -350,13 +340,7 @@ Jika ada field kosong atau salah:
 
 ---
 
-## 10. Tantangan (~10 menit)
-
-1. **Percepat:** ubah **Update interval** *WiFi MQTT Publish* dari `60` menjadi `30` detik. Jalankan ulang dan amati grafik Field 1 ter-update dua kali lebih cepat. Ingat batas penulisan pada tier gratis ThingSpeak.
-
----
-
-## 11. Ringkasan
+## 10. Ringkasan
 
 | Fase | Perintah / Aksi | Poin Kunci |
 |-------|------------------|--------------|
@@ -385,7 +369,7 @@ ADC ESP32 / knob dashboard ─▶ TemperatureData, ThresholdData
 
 ---
 
-## 12. Pemecahan Masalah
+## 11. Pemecahan Masalah
 
 | Masalah | Kemungkinan Penyebab | Solusi |
 |---------|----------------------|--------|
@@ -401,7 +385,7 @@ ADC ESP32 / knob dashboard ─▶ TemperatureData, ThresholdData
 
 ---
 
-## 13. Referensi MathWorks
+## 12. Referensi MathWorks
 
 - [ThingSpeak — Getting Started](https://www.mathworks.com/help/thingspeak/getting-started-with-thingspeak.html)
 - [Collect Data in a New Channel](https://www.mathworks.com/help/thingspeak/collect-data-in-a-new-channel.html)

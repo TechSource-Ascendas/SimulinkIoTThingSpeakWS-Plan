@@ -8,7 +8,7 @@
 
 | Metadata | |
 |----------|---|
-| **Duration** | 120 minutes (30 min IoT setup + 40 min model build + 30 min deploy & live data + 20 min challenge) |
+| **Duration** | 100 minutes (30 min IoT setup + 40 min model build + 30 min deploy & live data) |
 | **Audience** | Undergraduate, engineering background (beginner-to-intermediate) |
 | **MATLAB Products** | MATLAB, Simulink, Embedded Coder *(as reported by the MATLAB Dependency Analyzer)* |
 | **ESP32 support (add-on)** | Simulink Support Package for Arduino Hardware — a support package, not a toolbox (`ver` will not list it) |
@@ -20,7 +20,7 @@
 
 ## 1. Workshop Overview
 
-In this 2-hour hands-on workshop you build a **Simulink® model that runs on an ESP32**, reads sensor data, and publishes it live to a **ThingSpeak™ channel** over MQTT. The model also demonstrates a closed IoT loop: it reads its own channel back and drives both a simulated and a physical output.
+In this 100-minute hands-on workshop you build a **Simulink® model that runs on an ESP32**, reads sensor data, and publishes it live to a **ThingSpeak™ channel** over MQTT. The model also demonstrates a closed IoT loop: it reads its own channel back and drives both a simulated and a physical output.
 
 | Signal | Source | ThingSpeak field |
 |--------|--------|------------------|
@@ -28,14 +28,13 @@ In this 2-hour hands-on workshop you build a **Simulink® model that runs on an 
 | **ThresholdData** | Analog input / threshold knob | **Field 2** |
 | **FanControl** | TemperatureData > ThresholdData | **Field 3** |
 
-You work through the workshop in six phases:
+You work through the workshop in five phases:
 
 1. ✅ **Prepare the tools** — verify MATLAB product set, install the ESP32 hardware support, and connect the board.
 2. ✅ **Create a ThingSpeak account & channel** — field names, Channel ID, Write/Read/MQTT keys.
 3. ✅ **Explore the starter model** — the simulation scaffolding is already wired (knobs, switches, displays).
 4. ✅ **Build the IoT + hardware blocks** — analog inputs, DAC loop-back, threshold logic, MQTT publish and read-back.
 5. ✅ **Deploy & stream live** — run in external (Monitor & Tune) mode, watch the ThingSpeak charts update.
-6. ✅ **Challenge** — change the update rate, add a field, and watch the physical output react.
 
 > 💡 The **completed model** (`models/SimulinkIoTThingSpeak_complete.slx`) is your answer key. Use it if you fall behind — but try to build it yourself from the **starter** first.
 
@@ -102,8 +101,6 @@ Record the **COM port** (e.g. `COM8`). The completed model uses **external mode 
 ![ESP32-WROOM-32 DevKit pinout reference](images/screenshot_wiring.png)
 *Figure 6: **ESP32-WROOM-32 DevKit pinout.** The small white numbers along the board edge are physical header positions, **not** GPIO numbers — read the GPIO and ADC labels instead. This workshop uses the analogue inputs **A4/A5** (**GPIO32/GPIO33**), the DAC loop-back **DAC1/DAC2** (**GPIO25/GPIO26**), and the digital output **D2** (**GPIO2**, the board's onboard LED).*
 
-> 🎤 **Narration (presenter):** "Everything in IoT comes back to three questions: *how do I get data in, where does it go, and how do I get it back?* Today the ESP32 is our gateway — it reads the sensor, publishes over MQTT to ThingSpeak, and reads its own channel back. That is a complete IoT loop."
-
 ---
 
 ## 4. Step 2 — Create a ThingSpeak Account & Channel (~10 min)
@@ -155,8 +152,6 @@ Record these for Step 4/5 — you will enter them into the Simulink model:
 
 > ⚠️ **Keep keys private.** The Write key lets anyone write to your channel. Use your own keys in the model — never commit another user's key.
 
-> 🎤 **Narration (presenter):** "Notice the field names — `TemperatureData`, `ThresholdData`, `FanControl`. Those are not just labels. ThingSpeak stores every value in a numbered field, and the model builds the message `field1=…&field2=…&field3=…` that exactly matches this channel. Get the names wrong and the data lands in the wrong field."
-
 ---
 
 ## 5. Step 3 — Explore the Starter Model (~5 min)
@@ -176,8 +171,6 @@ The starter already contains (read-only for this step):
 - **Switch / Switch2** — select the **Simulated** input (from the knobs) or the **Hardware** input (from the ESP32 ADC, added in Step 5).
 - **GoTo/From blocks** — tags `SimADCTemp`, `SimThreshold`, `ADCTemp`, `ADCThreshold`, `TemperatureData`, `ThresholdData`, `FanControl` carry signals between the two halves of the model.
 - **Displays & Lamp** — visualize scaled values and on/off states.
-
-> 🎤 **Narration (presenter):** "The starter model is the wiring harness — all the *plumbing* is already there. Notice the `GoTo`/`From` tags: they work like named buses so we can route a signal across the canvas without drawing every wire. Your job now is to add the *engine*: the real ADC inputs, the threshold logic, and the IoT blocks that talk to ThingSpeak."
 
 ---
 
@@ -209,7 +202,6 @@ Open **Model Settings** (**Ctrl+E**) and check the following:
 - **Optimization level** = standard (`OptimizationPriority` `Balanced`); buffer and block-I/O storage optimization off — keeps the generated code simple and readable.
 
 > 💡 The completed model ships with **placeholder** credentials (`YOUR_WIFI_SSID`, `YOUR_WIFI_PASSWORD`, `YOUR_MQTT_USERNAME`, `YOUR_MQTT_PASSWORD`, `YOUR_READ_API_KEY`). **Replace them with your own Wi-Fi and channel** so the data flows to *your* ThingSpeak account — the block dialogs and target-resource settings read these values at build time.
-
 
 
 ---
@@ -331,8 +323,6 @@ Now open **ThingSpeak → Channels → My Channels → your channel → Private 
 
 > ✅ **Pass criterion:** within ~60 s of **Run**, new samples appear on **Field 1 and Field 2** charts, and **Field 3** flips between `0`/`1` as you cross the threshold with the knob. The **Displays** fed by *WiFi ThingSpeak Read* refresh the same values back on the model.
 
-> 🎤 **Narration (presenter):** "This is the IoT loop made visible: the ESP32 reads → publishes over MQTT → ThingSpeak stores it → the model reads its own channel back. If you can see Field 3 flipping in the cloud while you drag the knob, every link in the chain works."
-
 ---
 
 ## 9. Step 10 — Validate the Field Mapping
@@ -350,13 +340,7 @@ If a field is empty or wrong:
 
 ---
 
-## 10. Challenge (~10 min)
-
-1. **Speed it up:** change the **Update interval** of *WiFi MQTT Publish* from `60` to `30` seconds. Re-run and watch the Field 1 chart update twice as fast. Keep in mind ThingSpeak's free-tier write limits.
-
----
-
-## 11. Summary
+## 10. Summary
 
 | Phase | Command / Action | Key Takeaway |
 |-------|------------------|--------------|
@@ -385,7 +369,7 @@ ESP32 ADC / dashboard knob ─▶ TemperatureData, ThresholdData
 
 ---
 
-## 12. Troubleshooting
+## 11. Troubleshooting
 
 | Issue | Possible Cause | Solution |
 |-------|----------------|----------|
@@ -401,7 +385,7 @@ ESP32 ADC / dashboard knob ─▶ TemperatureData, ThresholdData
 
 ---
 
-## 13. MathWorks References
+## 12. MathWorks References
 
 - [ThingSpeak — Getting Started](https://www.mathworks.com/help/thingspeak/getting-started-with-thingspeak.html)
 - [Collect Data in a New Channel](https://www.mathworks.com/help/thingspeak/collect-data-in-a-new-channel.html)
