@@ -97,10 +97,10 @@ Connect the ESP32 over USB and confirm the board is seen:
 
 Record the **COM port** (e.g. `COM8`). The completed model uses **external mode (XCP on Serial) at 921600 baud** on that port.
 
-**Wiring reference — ESP32-WROOM-32 DevKit pinout.** Keep this chart next to the board while you wire the sensor, the DAC loop-back, and the fan output:
+**Wiring reference — ESP32-WROOM-32 DevKit pinout.** Keep this chart next to the board while you jumper the DAC loop-back and locate the FanControl LED:
 
 ![ESP32-WROOM-32 DevKit pinout reference](images/screenshot_wiring.png)
-*Figure 6: **ESP32-WROOM-32 DevKit pinout.** The small white numbers along the board edge are physical header positions, **not** GPIO numbers — read the GPIO and ADC labels instead. This workshop uses the analogue inputs on **pins 4 and 5**, the DAC loop-back on **DAC1/DAC2**, and the digital output on **pin 2** (`D2`).*
+*Figure 6: **ESP32-WROOM-32 DevKit pinout.** The small white numbers along the board edge are physical header positions, **not** GPIO numbers — read the GPIO and ADC labels instead. This workshop uses the analogue inputs **A4/A5** (**GPIO32/GPIO33**), the DAC loop-back **DAC1/DAC2** (**GPIO25/GPIO26**), and the digital output **D2** (**GPIO2**, the board's onboard LED).*
 
 > 🎤 **Narration (presenter):** "Everything in IoT comes back to three questions: *how do I get data in, where does it go, and how do I get it back?* Today the ESP32 is our gateway — it reads the sensor, publishes over MQTT to ThingSpeak, and reads its own channel back. That is a complete IoT loop."
 

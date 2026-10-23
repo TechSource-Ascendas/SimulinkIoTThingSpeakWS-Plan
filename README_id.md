@@ -19,7 +19,7 @@ Repositori ini berisi seluruh materi peserta & instruktur untuk **workshop hands
 | **Produk** | MATLAB R2026a, Simulink, Embedded Coder *(produk yang dilaporkan Dependency Analyzer MATLAB)* |
 | **Dukungan ESP32 (add-on)** | Simulink Support Package for Arduino Hardware (ESP32-WROOM) — support package, bukan toolbox (`ver` tidak akan mendaftarnya) |
 | **Platform** | ThingSpeak (analytics IoT MathWorks) + Wi-Fi / MQTT ESP32 |
-| **Hardware** | Board pengembangan ESP32-WROOM (kompatibel Arduino) — 1 board per kelompok |
+| **Hardware** | ESP32-WROOM DevKit V1 (30-pin) — 1 board per kelompok, plus 2 kabel jumper Dupont untuk loop-back DAC → ADC |
 
 ---
 
@@ -139,7 +139,9 @@ Pemetaan field (sesuai kanal ThingSpeak): **Field 1 = TemperatureData, Field 2 =
 
 - MATLAB R2026a dengan **Simulink** dan **Embedded Coder** (produk yang dilaporkan Dependency Analyzer sebagai kebutuhan), ditambah **Simulink Support Package for Arduino Hardware** yang dipasang sebagai add-on (dukungan ESP32).
 - Akun **ThingSpeak** gratis dan satu kanal privat (kunci Write / Read / MQTT) per kelompok.
-- 1 board pengembangan ESP32-WROOM per kelompok + potensiometer, breadboard, dan LED/buzzer di D2 untuk demo FanControl.
+- 1 **ESP32-WROOM DevKit V1 (30-pin)** per kelompok, beserta kabel micro-USB (daya + external mode XCP).
+- **2 kabel jumper Dupont female-to-female** — satu-satunya wiring eksternal yang dibutuhkan: **DAC1 (GPIO25) → input analog 4 (GPIO32)** dan **DAC2 (GPIO26) → input analog 5 (GPIO33)**, membentuk loop-back DAC → ADC.
+- **Tidak diperlukan sensor, potensiometer, breadboard, maupun LED eksternal.** Model membaca kembali output DAC-nya sendiri melalui ADC, dan `FanControl` menggerakkan **LED onboard pada GPIO2 (`D2`)**.
 
 ---
 

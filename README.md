@@ -19,7 +19,7 @@ This repository holds the complete participant + instructor material for a **han
 | **Products** | MATLAB R2026a, Simulink, Embedded Coder *(the products reported by the MATLAB Dependency Analyzer)* |
 | **ESP32 support (add-on)** | Simulink Support Package for Arduino Hardware (ESP32-WROOM) — a support package, not a toolbox (`ver` will not list it) |
 | **Platform** | ThingSpeak (MathWorks IoT analytics) + ESP32 Wi-Fi / MQTT |
-| **Hardware** | ESP32-WROOM (Arduino-compatible) development board — 1 board per group |
+| **Hardware** | ESP32-WROOM DevKit V1 (30-pin) — 1 board per group, plus 2 Dupont jumpers for the DAC → ADC loop-back |
 
 ---
 
@@ -139,7 +139,9 @@ Field mapping (matches the ThingSpeak channel): **Field 1 = TemperatureData, Fie
 
 - MATLAB R2026a with **Simulink** and **Embedded Coder** (the products the Dependency Analyzer reports as required), plus the **Simulink Support Package for Arduino Hardware** installed as an add-on (ESP32 support).
 - A free **ThingSpeak** account and a private channel (Write / Read / MQTT keys) per group.
-- 1 ESP32-WROOM development board per group + potentiometer(s), breadboard, and an LED/buzzer on D2 for the FanControl demo.
+- 1 **ESP32-WROOM DevKit V1 (30-pin)** per group, with its micro-USB cable (power + XCP external mode).
+- **2 female-to-female Dupont jumper wires** — the only external wiring this workshop needs: **DAC1 (GPIO25) → analogue input 4 (GPIO32)** and **DAC2 (GPIO26) → analogue input 5 (GPIO33)**, forming the DAC → ADC loop-back.
+- **No sensors, potentiometers, breadboard or external LED are required.** The model reads back its own DAC output on the ADC, and `FanControl` drives the **onboard LED on GPIO2 (`D2`)**.
 
 ---
 

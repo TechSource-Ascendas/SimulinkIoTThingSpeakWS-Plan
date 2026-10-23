@@ -97,10 +97,10 @@ Hubungkan ESP32 melalui USB dan pastikan board terdeteksi:
 
 Catat **port COM** (misal `COM8`). Model lengkap menggunakan **external mode (XCP on Serial) pada baud 921600** di port tersebut.
 
-**Referensi wiring — pinout ESP32-WROOM-32 DevKit.** Letakkan bagan ini di samping board saat Anda merangkai sensor, loop-back DAC, dan output fan:
+**Referensi wiring — pinout ESP32-WROOM-32 DevKit.** Letakkan bagan ini di samping board saat Anda memasang jumper loop-back DAC dan mencari LED FanControl:
 
 ![Referensi pinout ESP32-WROOM-32 DevKit](images/screenshot_wiring.png)
-*Gambar 6: **Pinout ESP32-WROOM-32 DevKit.** Angka putih kecil di tepi board adalah nomor posisi header fisik, **bukan** nomor GPIO — bacalah label GPIO dan ADC. Workshop ini memakai input analog pada **pin 4 dan pin 5**, loop-back DAC pada **DAC1/DAC2**, dan output digital pada **pin 2** (`D2`).*
+*Gambar 6: **Pinout ESP32-WROOM-32 DevKit.** Angka putih kecil di tepi board adalah nomor posisi header fisik, **bukan** nomor GPIO — bacalah label GPIO dan ADC. Workshop ini memakai input analog **A4/A5** (**GPIO32/GPIO33**), loop-back DAC **DAC1/DAC2** (**GPIO25/GPIO26**), dan output digital **D2** (**GPIO2**, LED onboard board).*
 
 > 🎤 **Narasi (presenter):** "Segala sesuatu di IoT kembali ke tiga pertanyaan: *bagaimana data masuk, ke mana data pergi, dan bagaimana data kembali?* Hari ini ESP32 adalah gerbangnya — ia membaca sensor, mempublikasikan lewat MQTT ke ThingSpeak, lalu membaca kembali kanalnya sendiri. Itulah satu loop IoT yang lengkap."
 
