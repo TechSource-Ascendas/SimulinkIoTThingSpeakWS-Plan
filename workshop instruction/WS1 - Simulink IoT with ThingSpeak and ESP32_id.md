@@ -97,6 +97,11 @@ Hubungkan ESP32 melalui USB dan pastikan board terdeteksi:
 
 Catat **port COM** (misal `COM8`). Model lengkap menggunakan **external mode (XCP on Serial) pada baud 921600** di port tersebut.
 
+**Referensi wiring — pinout ESP32-WROOM-32 DevKit.** Letakkan bagan ini di samping board saat Anda merangkai sensor, loop-back DAC, dan output fan:
+
+![Referensi pinout ESP32-WROOM-32 DevKit](images/screenshot_wiring.png)
+*Gambar 6: **Pinout ESP32-WROOM-32 DevKit.** Angka putih kecil di tepi board adalah nomor posisi header fisik, **bukan** nomor GPIO — bacalah label GPIO dan ADC. Workshop ini memakai input analog pada **pin 4 dan pin 5**, loop-back DAC pada **DAC1/DAC2**, dan output digital pada **pin 2** (`D2`).*
+
 > 🎤 **Narasi (presenter):** "Segala sesuatu di IoT kembali ke tiga pertanyaan: *bagaimana data masuk, ke mana data pergi, dan bagaimana data kembali?* Hari ini ESP32 adalah gerbangnya — ia membaca sensor, mempublikasikan lewat MQTT ke ThingSpeak, lalu membaca kembali kanalnya sendiri. Itulah satu loop IoT yang lengkap."
 
 ---
@@ -221,7 +226,7 @@ Dari library **Simulink Support Package for Arduino** (`arduinolib`) tambahkan:
    - Pengaturan: **Pin = 4** dan **Pin = 5** (pin ADC tempat sensor terhubung); **Sample time = 0.01**; output `uint16`.
 
    ![Dialog blok Analog Input](images/screenshot_analog_input_dialog.png)
-   *Gambar 6: Dialog **Analog Input** — **Pin = 4** untuk sensor temperatur, **Sample time = 0.01**, output `uint16`.*
+   *Gambar 7: Dialog **Analog Input** — **Pin = 4** untuk sensor temperatur, **Sample time = 0.01**, output `uint16`.*
 2. Hubungkan (melalui **Gain** `1/16` dan **Data Type Conversion** ke `uint16`) ke tag GoTo `ADCTemp` / `ADCThreshold`, sehingga blok **Switch** dapat memilihnya pada mode Hardware.
 3. Tambahkan dua blok **Analog Output** dan atur pin-nya ke **DAC1** dan **DAC2**. Hubungkan nilai ADC hasil scaling ke blok ini — ini membuat **loop-back ADC → DAC** nyata pada ESP32: putar potensiometer dan tegangan output DAC mengikutinya.
 
@@ -236,12 +241,12 @@ Model menyusun string payload lalu mempublikasikannya setiap 60 detik.
    - **Inputs**: hubungkan `From_TemperatureData` → input 1, `From_ThresholdData` → input 2, `From_FanControl` → input 3.
 
    ![Dialog blok Compose String](images/screenshot_compose_string_dialog.png)
-   *Gambar 7: Dialog **Compose String** — parameter `Format` adalah template payload ThingSpeak `field1=%d&field2=%d&field3=%d`.*
+   *Gambar 8: Dialog **Compose String** — parameter `Format` adalah template payload ThingSpeak `field1=%d&field2=%d&field3=%d`.*
 
 2. Model starter sudah memiliki blok **String to ASCII** (ukuran vektor output `128`). Hubungkan output Compose String ke blok ini — MQTT mengirim payload sebagai vektor byte ASCII.
 
    ![Dialog blok String to ASCII](images/screenshot_string_to_ascii_dialog.png)
-   *Gambar 8: Dialog **String to ASCII** — **Output vector size** `128`.*
+   *Gambar 9: Dialog **String to ASCII** — **Output vector size** `128`.*
 
 3. Tambahkan blok **WiFi MQTT Publish** (`arduinowifilib`) dan atur:
    - **Broker service** = `ThingSpeak`
@@ -250,7 +255,7 @@ Model menyusun string payload lalu mempublikasikannya setiap 60 detik.
    - Hubungkan output `String to ASCII` ke inputnya. Hubungkan **Output** ke **Display** (menampilkan status / kode error publish).
 
    ![Dialog blok WiFi MQTT Publish](images/screenshot_mqtt_publish_dialog.png)
-   *Gambar 9: Dialog **WiFi MQTT Publish** — Broker service = `ThingSpeak`, **Update interval** = `60` detik.*
+   *Gambar 10: Dialog **WiFi MQTT Publish** — Broker service = `ThingSpeak`, **Update interval** = `60` detik.*
 
 > 📡 Blok menggunakan kredensial **Wi-Fi** dan **MQTT ThingSpeak** yang Anda atur di **Langkah 4** (Model Settings → Target hardware resources). Broker MQTT ThingSpeak adalah `mqtt3.thingspeak.com`, port `1883`; blok menjaga koneksi persisten dan mempublikasikan sesuai interval.
 
@@ -260,14 +265,14 @@ Model menyusun string payload lalu mempublikasikannya setiap 60 detik.
    - **Input 1**: `TemperatureData` · **Input 2**: `ThresholdData`.
 
    ![Dialog blok Relational Operator](images/screenshot_relational_operator_dialog.png)
-   *Gambar 10: Dialog **Relational Operator** — Operator = `>`. Input 1 = TemperatureData, Input 2 = ThresholdData.*
+   *Gambar 11: Dialog **Relational Operator** — Operator = `>`. Input 1 = TemperatureData, Input 2 = ThresholdData.*
 
 2. Hubungkan outputnya (`boolean`) ke tag GoTo **FanControl**. Sinyal ini sudah dirutekan ke:
    - **Compose String** (Field 3) — sehingga status on/off ikut dipublikasikan; dan
    - `From_FanControl` → blok **Digital Output** pada **Pin 2** — menggerakkan LED/buzzer di board.
 
    ![Dialog blok Digital Output](images/screenshot_digital_output_dialog.png)
-   *Gambar 11: Dialog **Digital Output** — **Pin number** `2` (output fan/aktivitas di board).*
+   *Gambar 12: Dialog **Digital Output** — **Pin number** `2` (output fan/aktivitas di board).*
 
 Ketika `TemperatureData > ThresholdData`, `FanControl = 1` dan **D2 menyala**.
 
@@ -281,7 +286,7 @@ Ketika `TemperatureData > ThresholdData`, `FanControl = 1` dan **D2 menyala**.
    - **Sample time** = `15` (detik)
 
    ![Dialog blok WiFi ThingSpeak Read](images/screenshot_thingspeak_read_dialog.png)
-   *Gambar 12: Dialog **WiFi ThingSpeak Read** — Channel ID, kunci Read, **Fields to read** = `[1 2 3]`, **Sample time** = `15` detik.*
+   *Gambar 13: Dialog **WiFi ThingSpeak Read** — Channel ID, kunci Read, **Fields to read** = `[1 2 3]`, **Sample time** = `15` detik.*
 2. Hubungkan **Outputs 2, 3, 4** ke tiga blok **Display**. Output 1 adalah status permintaan.
 
 Ini memberi Anda loop *read-back*: apa pun yang dipublikasikan ESP32 akan muncul kembali di Display dalam ±15 detik — membuktikan perjalanan pulang-pergi melalui cloud.
@@ -294,7 +299,7 @@ Ini memberi Anda loop *read-back*: apa pun yang dipublikasikan ESP32 akan muncul
 ```
 
 ![Model lengkap (screenshot MATLAB)](images/screenshot_complete_model.png)
-*Gambar 13: **Model lengkap**. Analog input (ADC)×2 mengisi scaling/loop-back DAC dan switch Sim↔Hardware; rantai Compose String → String to ASCII → MQTT Publish keluar di tengah-atas; Relational Operator menggerakkan FanControl; dan WiFi ThingSpeak Read mengembalikan data kanal sendiri ke display.*
+*Gambar 14: **Model lengkap**. Analog input (ADC)×2 mengisi scaling/loop-back DAC dan switch Sim↔Hardware; rantai Compose String → String to ASCII → MQTT Publish keluar di tengah-atas; Relational Operator menggerakkan FanControl; dan WiFi ThingSpeak Read mengembalikan data kanal sendiri ke display.*
 
 ---
 
@@ -308,7 +313,7 @@ Karena **external mode** diaktifkan, MATLAB **membangun, mengunggah, dan menjala
 2. Di grup **Run on Hardware**, klik **Monitor & Tune**.
 
 ![Tab Hardware — jalankan external mode melalui Monitor & Tune](images/screenshot_monitor_tune.png)
-*Gambar 14: Pada tab **Hardware**, klik **Monitor & Tune** (lingkaran merah) — MATLAB membangun, mengunggah, dan menjalankan model di ESP32 dalam external mode.*
+*Gambar 15: Pada tab **Hardware**, klik **Monitor & Tune** (lingkaran merah) — MATLAB membangun, mengunggah, dan menjalankan model di ESP32 dalam external mode.*
 
 > ⚠️ **Run pertama:** model membaca `SensorKnob` / `ThresholdKnob` dari base workspace. Jika build gagal dengan galat *"undefined variable"*, jalankan `run('data/TunableParameter.m')` terlebih dahulu (Langkah 1), lalu klik **Monitor & Tune** lagi.
 
@@ -322,7 +327,7 @@ Selama berjalan Anda dapat **Monitor & Tune** secara live:
 Sekarang buka **ThingSpeak → Channels → My Channels → kanal Anda → Private View**:
 
 ![Grafik ThingSpeak live setelah deploy](images/screenshot_thingspeak_channel_live.png)
-*Gambar 15: Grafik Field 1–3 live pada kanal ThingSpeak setelah ESP32 mulai mempublikasikan. Field 1 = TemperatureData, Field 2 = ThresholdData, Field 3 = FanControl.*
+*Gambar 16: Grafik Field 1–3 live pada kanal ThingSpeak setelah ESP32 mulai mempublikasikan. Field 1 = TemperatureData, Field 2 = ThresholdData, Field 3 = FanControl.*
 
 > ✅ **Kriteria lolos:** dalam ±60 detik setelah **Run**, sampel baru muncul pada grafik **Field 1 dan Field 2**, dan **Field 3** berubah antara `0`/`1` saat Anda melewati threshold dengan knob. **Display** yang diumpan *WiFi ThingSpeak Read* me-refresh nilai yang sama kembali ke model.
 

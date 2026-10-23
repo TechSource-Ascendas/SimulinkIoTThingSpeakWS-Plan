@@ -97,6 +97,11 @@ Connect the ESP32 over USB and confirm the board is seen:
 
 Record the **COM port** (e.g. `COM8`). The completed model uses **external mode (XCP on Serial) at 921600 baud** on that port.
 
+**Wiring reference — ESP32-WROOM-32 DevKit pinout.** Keep this chart next to the board while you wire the sensor, the DAC loop-back, and the fan output:
+
+![ESP32-WROOM-32 DevKit pinout reference](images/screenshot_wiring.png)
+*Figure 6: **ESP32-WROOM-32 DevKit pinout.** The small white numbers along the board edge are physical header positions, **not** GPIO numbers — read the GPIO and ADC labels instead. This workshop uses the analogue inputs on **pins 4 and 5**, the DAC loop-back on **DAC1/DAC2**, and the digital output on **pin 2** (`D2`).*
+
 > 🎤 **Narration (presenter):** "Everything in IoT comes back to three questions: *how do I get data in, where does it go, and how do I get it back?* Today the ESP32 is our gateway — it reads the sensor, publishes over MQTT to ThingSpeak, and reads its own channel back. That is a complete IoT loop."
 
 ---
@@ -221,7 +226,7 @@ From the **Simulink Support Package for Arduino** library (`arduinolib`) add:
    - Settings: **Pin = 4** and **Pin = 5** (the ADC pins the sensors are wired to); **Sample time = 0.01**; output `uint16`.
 
    ![Analog Input block parameters](images/screenshot_analog_input_dialog.png)
-   *Figure 6: The **Analog Input** dialog — **Pin = 4** for the temperature sensor, **Sample time = 0.01**, output `uint16`.*
+   *Figure 7: The **Analog Input** dialog — **Pin = 4** for the temperature sensor, **Sample time = 0.01**, output `uint16`.*
 2. Wire them (via the **Gain** `1/16` scaling and a **Data Type Conversion** to `uint16`) into the `ADCTemp` / `ADCThreshold` GoTo tags, so the **Switch** blocks can select them in Hardware mode.
 3. Add two **Analog Output** blocks and set their pins to **DAC1** and **DAC2**. Wire the scaled ADC values into them — this creates a real **ADC → DAC loop-back** on the ESP32: turn the potentiometer and the DAC output voltage follows it.
 
@@ -236,12 +241,12 @@ The model builds a payload string and publishes it every 60 s.
    - **Inputs**: wire `From_TemperatureData` → input 1, `From_ThresholdData` → input 2, `From_FanControl` → input 3.
 
    ![Compose String block parameters](images/screenshot_compose_string_dialog.png)
-   *Figure 7: The **Compose String** dialog — the `Format` field is the ThingSpeak payload template `field1=%d&field2=%d&field3=%d`.*
+   *Figure 8: The **Compose String** dialog — the `Format` field is the ThingSpeak payload template `field1=%d&field2=%d&field3=%d`.*
 
 2. The starter already has a **String to ASCII** block (output vector size `128`). Wire the Compose String output into it — MQTT transmits the payload as an ASCII byte vector.
 
    ![String to ASCII block parameters](images/screenshot_string_to_ascii_dialog.png)
-   *Figure 8: The **String to ASCII** dialog — **Output vector size** `128`.*
+   *Figure 9: The **String to ASCII** dialog — **Output vector size** `128`.*
 
 3. Add a **WiFi MQTT Publish** block (`arduinowifilib`) and set:
    - **Broker service** = `ThingSpeak`
@@ -250,7 +255,7 @@ The model builds a payload string and publishes it every 60 s.
    - Wire the `String to ASCII` output into its input. Connect its **Output** to a **Display** (shows publish status / error code).
 
    ![WiFi MQTT Publish block parameters](images/screenshot_mqtt_publish_dialog.png)
-   *Figure 9: The **WiFi MQTT Publish** dialog — Broker service = `ThingSpeak`, **Update interval** = `60` s.*
+   *Figure 10: The **WiFi MQTT Publish** dialog — Broker service = `ThingSpeak`, **Update interval** = `60` s.*
 
 > 📡 The block uses the **Wi-Fi** and **ThingSpeak MQTT credentials** you set in **Step 4** (Model Settings → Target hardware resources). ThingSpeak's MQTT broker is `mqtt3.thingspeak.com`, port `1883`; the block keeps a persistent connection and publishes on the interval.
 
@@ -260,14 +265,14 @@ The model builds a payload string and publishes it every 60 s.
    - **Input 1**: `TemperatureData` · **Input 2**: `ThresholdData`.
 
    ![Relational Operator block parameters](images/screenshot_relational_operator_dialog.png)
-   *Figure 10: The **Relational Operator** dialog — Operator = `>`. Input 1 = TemperatureData, Input 2 = ThresholdData.*
+   *Figure 11: The **Relational Operator** dialog — Operator = `>`. Input 1 = TemperatureData, Input 2 = ThresholdData.*
 
 2. Wire its output (`boolean`) into the **FanControl** GoTo tag. The signal is already routed to:
    - the **Compose String** (Field 3) — so the on/off state is published; and
    - `From_FanControl` → **Digital Output** block on **Pin 2** — drives the LED/buzzer on the board.
 
    ![Digital Output block parameters](images/screenshot_digital_output_dialog.png)
-   *Figure 11: The **Digital Output** dialog — **Pin number** `2` (the board's Fan/activity output).*
+   *Figure 12: The **Digital Output** dialog — **Pin number** `2` (the board's Fan/activity output).*
 
 When `TemperatureData > ThresholdData`, `FanControl = 1` and **D2 turns on**.
 
@@ -281,7 +286,7 @@ When `TemperatureData > ThresholdData`, `FanControl = 1` and **D2 turns on**.
    - **Sample time** = `15` (seconds)
 
    ![WiFi ThingSpeak Read block parameters](images/screenshot_thingspeak_read_dialog.png)
-   *Figure 12: The **WiFi ThingSpeak Read** dialog — Channel ID, Read API key, **Fields to read** = `[1 2 3]`, **Sample time** = `15` s.*
+   *Figure 13: The **WiFi ThingSpeak Read** dialog — Channel ID, Read API key, **Fields to read** = `[1 2 3]`, **Sample time** = `15` s.*
 2. Wire its **Outputs 2, 3, 4** into three **Display** blocks. Output 1 is the request status.
 
 This gives you a *read-back* loop: whatever the ESP32 publishes appears back in the Displays within ~15 s — proving the round trip through the cloud.
@@ -294,7 +299,7 @@ This gives you a *read-back* loop: whatever the ESP32 publishes appears back in 
 ```
 
 ![Completed model (MATLAB screenshot)](images/screenshot_complete_model.png)
-*Figure 13: The **completed model**. Analog inputs (ADC)×2 feed the scaling/DAC loop-back and the Sim↔Hardware switches; the Compose String → String to ASCII → MQTT Publish chain exits top-centre; the Relational Operator drives FanControl; and WiFi ThingSpeak Read returns the channel's own data to the displays.*
+*Figure 14: The **completed model**. Analog inputs (ADC)×2 feed the scaling/DAC loop-back and the Sim↔Hardware switches; the Compose String → String to ASCII → MQTT Publish chain exits top-centre; the Relational Operator drives FanControl; and WiFi ThingSpeak Read returns the channel's own data to the displays.*
 
 ---
 
@@ -308,7 +313,7 @@ Because **external mode** is enabled, MATLAB **builds, uploads, and runs** the m
 2. In the **Run on Hardware** group, click **Monitor & Tune**.
 
 ![Hardware tab — run in external mode via Monitor & Tune](images/screenshot_monitor_tune.png)
-*Figure 14: On the **Hardware** tab, click **Monitor & Tune** (red circle) — MATLAB builds, uploads and starts the model on the ESP32 in external mode.*
+*Figure 15: On the **Hardware** tab, click **Monitor & Tune** (red circle) — MATLAB builds, uploads and starts the model on the ESP32 in external mode.*
 
 > ⚠️ **First run:** the model reads `SensorKnob` / `ThresholdKnob` from the base workspace. If the build fails with an *"undefined variable"* error, run `run('data/TunableParameter.m')` first (Step 1), then click **Monitor & Tune** again.
 
@@ -322,7 +327,7 @@ While it runs you can **Monitor & Tune** live:
 Now open **ThingSpeak → Channels → My Channels → your channel → Private View**:
 
 ![Live ThingSpeak charts after deployment](images/screenshot_thingspeak_channel_live.png)
-*Figure 15: Live Field 1–3 charts on the ThingSpeak channel after the ESP32 starts publishing. Field 1 = TemperatureData, Field 2 = ThresholdData, Field 3 = FanControl.*
+*Figure 16: Live Field 1–3 charts on the ThingSpeak channel after the ESP32 starts publishing. Field 1 = TemperatureData, Field 2 = ThresholdData, Field 3 = FanControl.*
 
 > ✅ **Pass criterion:** within ~60 s of **Run**, new samples appear on **Field 1 and Field 2** charts, and **Field 3** flips between `0`/`1` as you cross the threshold with the knob. The **Displays** fed by *WiFi ThingSpeak Read* refresh the same values back on the model.
 

@@ -23,6 +23,14 @@ Repositori ini berisi seluruh materi peserta & instruktur untuk **workshop hands
 
 ---
 
+## Hardware & Wiring
+
+![Referensi pinout ESP32-WROOM-32 DevKit](workshop%20instruction/images/screenshot_wiring.png)
+
+*Pinout ESP32-WROOM-32 DevKit — temukan input analog (pin 4 dan pin 5), output DAC (DAC1/DAC2), dan output digital (pin 2, `D2`) pada header fisik. Angka putih kecil di tepi board adalah nomor posisi header, bukan nomor GPIO.*
+
+---
+
 ## Struktur Folder
 
 ```
@@ -44,7 +52,7 @@ SimulinkIoTThingSpeakWS-Plan/
 │  └─ project/                           # Metadata project MATLAB (auto-generated)
 ├─ work/                                 # Output build, di-ignore git (<model>_ert_rtw/, *.bin/.elf/.map, slprj/)
 └─ workshop instruction/
-   ├─ images/                            # screenshot asli MATLAB & ThingSpeak
+   ├─ images/                            # screenshot asli MATLAB & ThingSpeak + pinout ESP32
    │  ├─ screenshot_starter_model.png
    │  ├─ screenshot_complete_model.png
    │  ├─ screenshot_analog_input_dialog.png
@@ -55,6 +63,7 @@ SimulinkIoTThingSpeakWS-Plan/
    │  ├─ screenshot_digital_output_dialog.png
    │  ├─ screenshot_thingspeak_read_dialog.png
    │  ├─ screenshot_hardware_settings.png
+   │  ├─ screenshot_wiring.png
    │  ├─ screenshot_monitor_tune.png
    │  ├─ screenshot_thingspeak_home.png
    │  ├─ screenshot_thingspeak_channel_settings.png
@@ -118,7 +127,7 @@ Pemetaan field (sesuai kanal ThingSpeak): **Field 1 = TemperatureData, Field 2 =
 
 - ✅ `models/SimulinkIoTThingSpeak_starter.slx` + `models/SimulinkIoTThingSpeak_complete.slx`
 - ✅ `workshop instruction/` — panduan WS1 dalam **MD + DOCX + MLX** (ID & EN)
-- ✅ `workshop instruction/images/` — screenshot asli MATLAB & ThingSpeak
+- ✅ `workshop instruction/images/` — screenshot asli MATLAB & ThingSpeak, plus referensi pinout ESP32-WROOM-32
 - 🔜 `requirements/` CSV — turunkan dari sinyal model (daftar REQ)
 - 🔜 `tests/` CSV — kasus uji (pemetaan field, publish/read-back)
 - ✅ `data/TunableParameter.m` — definisi parameter tunable (`SensorKnob`, `ThresholdKnob`, ExportedGlobal)

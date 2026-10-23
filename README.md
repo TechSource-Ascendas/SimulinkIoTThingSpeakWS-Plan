@@ -23,6 +23,14 @@ This repository holds the complete participant + instructor material for a **han
 
 ---
 
+## Hardware & Wiring
+
+![ESP32-WROOM-32 DevKit pinout reference](workshop%20instruction/images/screenshot_wiring.png)
+
+*ESP32-WROOM-32 DevKit pinout — locate the analogue inputs (pins 4 and 5), the DAC outputs (DAC1/DAC2) and the digital output (pin 2, `D2`) on the physical header. The small white numbers along the board edge are header positions, not GPIO numbers.*
+
+---
+
 ## Folder Structure
 
 ```
@@ -44,7 +52,7 @@ SimulinkIoTThingSpeakWS-Plan/
 │  └─ project/                           # MATLAB project metadata (auto-generated)
 ├─ work/                                 # Build output, git-ignored (<model>_ert_rtw/, *.bin/.elf/.map, slprj/)
 └─ workshop instruction/
-   ├─ images/                            # genuine MATLAB + ThingSpeak screenshots
+   ├─ images/                            # genuine MATLAB + ThingSpeak screenshots + ESP32 pinout
    │  ├─ screenshot_starter_model.png
    │  ├─ screenshot_complete_model.png
    │  ├─ screenshot_analog_input_dialog.png
@@ -55,6 +63,7 @@ SimulinkIoTThingSpeakWS-Plan/
    │  ├─ screenshot_digital_output_dialog.png
    │  ├─ screenshot_thingspeak_read_dialog.png
    │  ├─ screenshot_hardware_settings.png
+   │  ├─ screenshot_wiring.png
    │  ├─ screenshot_monitor_tune.png
    │  ├─ screenshot_thingspeak_home.png
    │  ├─ screenshot_thingspeak_channel_settings.png
@@ -118,7 +127,7 @@ Field mapping (matches the ThingSpeak channel): **Field 1 = TemperatureData, Fie
 
 - ✅ `models/SimulinkIoTThingSpeak_starter.slx` + `models/SimulinkIoTThingSpeak_complete.slx`
 - ✅ `workshop instruction/` — WS1 guide in **MD + DOCX + MLX** (EN & ID)
-- ✅ `workshop instruction/images/` — genuine MATLAB & ThingSpeak screenshots
+- ✅ `workshop instruction/images/` — genuine MATLAB & ThingSpeak screenshots, plus the ESP32-WROOM-32 pinout reference
 - 🔜 `requirements/` CSV — derive from the model signals (REQ list)
 - 🔜 `tests/` CSV — validation cases (field mapping, publish/read-back)
 - ✅ `data/TunableParameter.m` — tunable parameter definitions (`SensorKnob`, `ThresholdKnob`, ExportedGlobal)
