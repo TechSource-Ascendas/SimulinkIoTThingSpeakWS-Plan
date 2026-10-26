@@ -23,6 +23,20 @@ Repositori ini berisi seluruh materi peserta & instruktur untuk **workshop hands
 
 ---
 
+## Hasil Pembelajaran
+
+Setelah sesi ini Anda akan mampu:
+
+1. ✅ Memverifikasi produk MATLAB yang diperlukan (MATLAB, Simulink, Embedded Coder) dan support package hardware ESP32.
+2. ✅ Membuat **akun ThingSpeak** dan **kanal privat** dengan field bernama.
+3. ✅ Menemukan **Channel ID, Write API Key, Read API Key, dan MQTT API Key** sebuah kanal.
+4. ✅ Mengonfigurasi target ESP32 (pemilihan board, external mode, Wi-Fi, kredensial ThingSpeak).
+5. ✅ Membangun model Simulink IoT: analog input, scaling, logika threshold, **publish MQTT**, **read-back ThingSpeak**.
+6. ✅ Menjalankan model dalam **external (Monitor & Tune)** mode dan melihat data live muncul di ThingSpeak.
+7. ✅ Memahami jalur kode C embedded yang dihasilkan (ERT, XCP on Serial).
+
+---
+
 ## Hardware & Wiring
 
 ![Referensi pinout ESP32-WROOM-32 DevKit](workshop%20instruction/images/screenshot_wiring.png)

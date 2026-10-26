@@ -23,6 +23,20 @@ This repository holds the complete participant + instructor material for a **han
 
 ---
 
+## Learning Outcomes
+
+After this session you will be able to:
+
+1. ✅ Verify the required MathWorks products (MATLAB, Simulink, Embedded Coder) and the ESP32 hardware support package.
+2. ✅ Create a **ThingSpeak account** and a **private channel** with named fields.
+3. ✅ Locate a channel's **Channel ID, Write API Key, Read API Key, and MQTT API Key**.
+4. ✅ Configure the ESP32 target (board selection, external mode, Wi-Fi, ThingSpeak credentials).
+5. ✅ Build an IoT Simulink model: analog input, scaling, threshold logic, **MQTT publish**, **ThingSpeak read-back**.
+6. ✅ Run the model in **external (Monitor & Tune)** mode and watch live data appear in ThingSpeak.
+7. ✅ Interpret the generated embedded C code path (ERT, XCP on Serial).
+
+---
+
 ## Hardware & Wiring
 
 ![ESP32-WROOM-32 DevKit pinout reference](workshop%20instruction/images/screenshot_wiring.png)
